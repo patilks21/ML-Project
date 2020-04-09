@@ -107,12 +107,24 @@ X_test_num_scaled = scaler.transform(X_test_num)
 for i, col in enumerate(num_feat):
     X_test_num.loc[:,col] = X_test_num_scaled[:, i]
 
+# SVM Regressor
+from sklearn.metrics import accuracy_score
+from sklearn.svm import SVR
+regressor = SVR(kernel='rbf')
+regressor.fit(X_train_num, y_train)
+y_pred = regressor.predict(X_test_num)
+print("SVR:")
+dt_score_train = regressor.score(X_train_num, y_train)
+print("Accuracy on Training score: ",dt_score_train)
+dt_score_test = regressor.score(X_test_num, y_test)
+print("Accuracy on Testing score: ",dt_score_test)
+
 # Random Forest Regressor
 from sklearn.ensemble import RandomForestRegressor
 dt = RandomForestRegressor(n_estimators = 1000,n_jobs=-1,random_state = 0)
 dt.fit(X_train_num, y_train)
 dt_score_train = dt.score(X_train_num, y_train)
-print("Random Forest Regression :")
+print("\nRandom Forest Regression :")
 print("Accuracy on Training score: ",dt_score_train)
 dt_score_test = dt.score(X_test_num, y_test)
 print("Accuracy on Testing score: ",dt_score_test)
@@ -160,6 +172,18 @@ target_classes = pd.cut(target,bins = [0,6,10],labels = [0,1],right = True,inclu
 target_classes.value_counts()
 from sklearn.model_selection import train_test_split # to split the data into two parts
 X_train,X_test,y_train,y_test = train_test_split(temp_whole,target_classes, random_state = 1,test_size = 0.20,stratify =target_classes) # test_size = 0.10
+
+# SVM
+from sklearn.svm import SVC
+classifier = SVC(kernel='linear', random_state=0)
+classifier.fit(X_train, y_train)
+y_pred = classifier.predict(X_test)
+print("\nSVC:")
+dt_score_train = classifier.score(X_train, y_train)
+print("Accuracy on Training score: ",dt_score_train)
+dt_score_test = classifier.score(X_test, y_test)
+print("Accuracy on Testing score: ",dt_score_test)
+
 
 # Logistic Regression
 from sklearn.linear_model import LogisticRegression
